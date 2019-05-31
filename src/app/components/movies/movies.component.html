@@ -1,0 +1,78 @@
+<div class="wrapper">
+  <div class="title">Data from the reddit API</div>
+  <input type="text" [(ngModel)]="subreddit">
+  <button (click)="changeSubreddit()">Change Subreddit!</button>
+
+
+  <div class="wrapper">
+
+    <div class="table">
+
+      <div class="row header">
+        <div class="cell">
+          Author
+        </div>
+        <div class="cell">
+          Title
+        </div>
+        <div class="cell">
+          Thumbnail
+        </div>
+        <div class="cell">
+          votes
+        </div>
+        <div class="cell">
+          Url
+        </div>
+        <div class="cell">
+          TimeStamp
+        </div>
+
+      </div>
+
+      <div class="row" *ngFor="let movieData of movies;let i = index">
+        <div class="cell">
+          {{movieData.data.author}} </div>
+        <div class="cell">
+          {{movieData.data.title}}
+        </div>
+        <div class="cell">
+          <span *ngIf="movieData.data.thumbnail.includes('https')">
+            <img src="{{movieData.data.thumbnail}}"></span>
+          <span *ngIf="!movieData.data.thumbnail.includes('https')">{{movieData.data.thumbnail}}</span>
+        </div>
+        <div class="cell">
+          {{movieData.data.ups}}
+        </div>
+        <div class="cell">
+          <a href="{{movieData.data.url}}" target="_blank">link to
+            article</a>
+          </div>
+      <div class="cell"> {{movieData.data.created_utc * 1000 | date: 'yyyy/MM/dd h:mm:ss a'}}</div>
+    </div>
+
+  </div>
+
+
+
+  <div class="wrap-pagination">
+    <div>
+      <div class='inline'><button class='inline-block next-btn' (click)="changePage('before')" *ngIf="countNext>0">
+          < previous page</button> </div> <div class='inline'><button class='inline-block next-btn'
+              (click)="changePage('after')">next page > </button></div>
+    </div>
+  </div>
+
+  <div class="title">upvotes by post time of day:</div>
+  <button (click)="showGraph()"
+    class="show-graph">{{!loadingGraphData? 'Click me to load the graph!': 'Just a sec..'}}</button>
+  <div>
+    <div>
+      <div style="display: block">
+        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+          [legend]="barChartLegend" [chartType]="barChartType">
+        </canvas>
+      </div>
+    </div>
+  </div>
+</div>
